@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airdrop Frontend</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.4.6.min.js"></script>
+</head>
+<body>
+    <h1>Airdrop Frontend</h1>
+    <button id="connect">Connect to MetaMask</button>
+    <h2>Airdrop</h2>
+    <form id="airdropForm">
+        <label for="recipients">Recipients (comma-separated):</label>
+        <textarea id="recipients" rows="5" cols="50"></textarea><br>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount"><br>
+        <button type="submit">Airdrop Tokens</button>
+    </form>
+    <script src="index.js"></script>
+</body>
+</html>
+
