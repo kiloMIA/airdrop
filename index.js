@@ -191,7 +191,7 @@ const CONTRACT_ABI = [
 		"type": "function"
 	}
 ];
-const CONTRACT_ADDRESS = '0x0c40aF49F528927464F12bF4d0bcfAA69b7015eb';
+const CONTRACT_ADDRESS = '0xA1f57C9A0CAbE12f665C318bDDC83d9dD26b1C2D';
 
 let signer, contract;
 
@@ -203,6 +203,7 @@ async function connectMetaMask() {
       signer = provider.getSigner();
       contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       console.log('Connected to MetaMask');
+	  console.log('Contract instance:', contract);
     } catch (err) {
       console.error('Error connecting to MetaMask:', err);
     }
@@ -249,8 +250,10 @@ async function mintTokens(event) {
         await tx.wait();
         alert('Mint successful');
     } catch (err) {
-        console.error('Error during minting:', err);
-        alert('Error during minting');
+        // Replace the existing console.error and alert lines with the following:
+		console.error('Error during minting:', err.message);
+		alert('Error during minting: ' + err.message);
+
     }
 }
 
