@@ -3,6 +3,8 @@ const connectButton = document.getElementById('connect');
 const airdropForm = document.getElementById('airdropForm');
 const recipientsInput = document.getElementById('recipients');
 const amountInput = document.getElementById('amount');
+const mintForm = document.getElementById('mintForm');
+const mintAmountInput = document.getElementById('mintAmount');
 
 const CONTRACT_ABI = [
 	{
@@ -232,5 +234,26 @@ async function airdropTokens(event) {
   }
 }
 
+async function mintTokens(event) {
+    event.preventDefault();
+
+    const mintAmount = mintAmountInput.value;
+
+    if (!mintAmount) {
+        alert('Please provide an amount to mint');
+        return;
+    }
+
+    try {
+        const tx = await contract.mint(ethers.utils.parseUnits(mintAmount, 18));
+        await tx.wait();
+        alert('Mint successful');
+    } catch (err) {
+        console.error('Error during minting:', err);
+        alert('Error during minting');
+    }
+}
+
 connectButton.addEventListener('click', connectMetaMask);
 airdropForm.addEventListener('submit', airdropTokens);
+mintForm.addEventListener('submit', mintTokens);
