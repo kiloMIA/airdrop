@@ -60,13 +60,37 @@ const CONTRACT_ABI = [
 	{
 		"inputs": [
 			{
+				"internalType": "address[]",
+				"name": "recipients",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "airdrop",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
-				"name": "owner",
+				"name": "",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "spender",
+				"name": "",
 				"type": "address"
 			}
 		],
@@ -109,7 +133,7 @@ const CONTRACT_ABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "account",
+				"name": "",
 				"type": "address"
 			}
 		],
@@ -119,6 +143,71 @@ const CONTRACT_ABI = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "burn",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -191,26 +280,30 @@ const CONTRACT_ABI = [
 		"type": "function"
 	}
 ];
-const CONTRACT_ADDRESS = '0xA1f57C9A0CAbE12f665C318bDDC83d9dD26b1C2D';
+const CONTRACT_ADDRESS = "0xB4e4BA5ec95f2895FEE52D18C29cBb70b4284472";
 
-let signer, contract;
+
+let signer;
+let contract;
 
 async function connectMetaMask() {
-  if (typeof window.ethereum !== 'undefined') {
-    try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      signer = provider.getSigner();
-      contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-      console.log('Connected to MetaMask');
-	  console.log('Contract instance:', contract);
-    } catch (err) {
-      console.error('Error connecting to MetaMask:', err);
+    if (typeof window.ethereum !== "undefined") {
+        try {
+            // Request account access
+            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            window.account = accounts[0];
+            contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+            console.log("Contract instance:",contract);
+        } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+        }
+    } else {
+        console.error("MetaMask is not installed.");
     }
-  } else {
-    console.error('MetaMask is not installed');
-  }
 }
+
 
 async function airdropTokens(event) {
   event.preventDefault();
